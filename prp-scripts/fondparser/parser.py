@@ -172,10 +172,10 @@ class Problem(object):
 
         # goal
         o = []
-        o.append (sp + "(:goal")
+        o.append (sp + "(:goal(and")
         for p in self.goal.args:
             o.append (p.export (2, sp, True))
-        o.append (sp + ")") # close goal
+        o.append (sp + "))") # close goal
         fp.write ("\n".join (o) + "\n")
 
         fp.write (")") # close define
