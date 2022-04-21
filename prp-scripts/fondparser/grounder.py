@@ -4,6 +4,8 @@ from formula import Primitive, Forall, When, And
 from predicate import Predicate
 import itertools
 
+USE_STATICS=True
+
 
 class GroundProblem(Problem):
     """
@@ -377,13 +379,16 @@ class GroundProblem(Problem):
 
     def _ground(self):
         """Convert this problem into a ground problem."""
+        if USE_STATICS:
+            import statics_based_grounder as SBG
+            SBG.StaticsBasedGrounder(self).ground_actions()
+        else:
+            self._create_fluents()
 
-        self._create_fluents()
-
-        # to avoid creating a bunch new fluent objects, create a dictionary mapping fluent names to their objects
-        fluent_dict = {hash(f): f for f in self.fluents}
-        self._create_operators(fluent_dict)
-        self._ground_init(fluent_dict)
+            # to avoid creating a bunch new fluent objects, create a dictionary mapping fluent names to their objects
+            fluent_dict = {hash(f): f for f in self.fluents}
+            self._create_operators(fluent_dict)
+            self._ground_init(fluent_dict)
 
     def __repr__(self):
         """Similar to dump and __str__."""
