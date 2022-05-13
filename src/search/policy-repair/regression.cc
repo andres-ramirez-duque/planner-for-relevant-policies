@@ -122,7 +122,8 @@ list<PolicyItem *> perform_regression(const SearchEngine::Plan &plan, Regression
 
         for (int i = plan.size() - 1; i >= 0; i--) {
             RegressionStep *next = (RegressionStep*)reg_steps.back();
-            reg_steps.push_back(new RegressionStep(*plan[i], states.back(), ++distance, next));
+            distance += (*plan[i]).get_cost();
+            reg_steps.push_back(new RegressionStep(*plan[i], states.back(), distance, next));
             next->prev = (RegressionStep*)reg_steps.back();
             states.pop_back();
         }
@@ -139,8 +140,8 @@ list<PolicyItem *> perform_regression(const SearchEngine::Plan &plan, Regression
             RegressionStep *next = (RegressionStep*)reg_steps.back();
 
             PartialState *regressed = new PartialState(*(next->state), *plan[i], false, states[i]);
-
-            reg_steps.push_back(new RegressionStep(*plan[i], regressed, ++distance, next));
+            distance += (*plan[i]).get_cost();
+            reg_steps.push_back(new RegressionStep(*plan[i], regressed, distance, next));
 
             next->prev = (RegressionStep*)reg_steps.back();
 
