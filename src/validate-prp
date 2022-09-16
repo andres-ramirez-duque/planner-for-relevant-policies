@@ -12,28 +12,32 @@ if [[ "$1" == "costed" ]]; then
     MODE="costed"
     shift
 fi
+ROOT=$(dirname "$0")
+echo $ROOT
 
-./prp $MODE $1 $2 --dump-policy 2 --optimize-final-policy 1
+#${ROOT}/prp $MODE $1 $2 --dump-policy 2 --optimize-final-policy 1
 
-python ../prp-scripts/translate_policy.py > human_policy.out
+${ROOT}/prp $MODE $1 $2 --dump-policy 2 --optimize-final-policy 1 --jic-limit 30 --plan-with-policy 0
+
+python ${ROOT}/../prp-scripts/translate_policy.py > human_policy.out
 
 
 if [[ "$MODE" == "costed" ]]
 then
   DFN="_cost_stripped_domain.pddl"
   PFN="_cost_stripped_problem.pddl"
-  python ../prp-scripts/metric_stripper.py $1 $2 $DFN $PFN
+  python ${ROOT}/../prp-scripts/metric_stripper.py $1 $2 $DFN $PFN
 else
   DFN=$1
   PFN=$2
 fi
 
-python ../prp-scripts/validator.py $DFN $PFN human_policy.out prp
+python ${ROOT}/../prp-scripts/validator.py $DFN $PFN human_policy.out prp
 
 dot -Tpng graph.dot > graph.png
 
 if [ "--keep-files" != "$3" ]; then
-  ./cleanup
+  ${ROOT}/cleanup
   rm -f policy.out
   rm -f human_policy.out
   rm -f graph.dot

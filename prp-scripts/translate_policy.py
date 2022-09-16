@@ -1,6 +1,8 @@
 
 import re, pprint
 
+REMOVE_ACTION_VERSION_COUNTS=True
+
 def read_file(file_name):
     """Return a list of the lines of a file."""
     f = open(file_name, 'r')
@@ -96,6 +98,13 @@ def translate_lines(lines):
     for line in lines:
         if 'If' == line[:2]:
             print "If holds: %s" % '/'.join([mapping[item] for item in line.split(' ')[2:]])
+        elif REMOVE_ACTION_VERSION_COUNTS and 'Execute:' in line:
+            bits=[]
+            for e in line.split(" "):
+              if '_v' in e:
+                e=e.split('_v')[0]
+              bits.append(e)
+            print " ".join(bits)  
         else:
             print line
 
