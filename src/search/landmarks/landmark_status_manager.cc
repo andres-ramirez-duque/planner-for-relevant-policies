@@ -125,16 +125,16 @@ bool LandmarkStatusManager::update_lm_status(const State &state) {
     vector<bool> &reached = get_reached_landmarks(state);
 
     const set<LandmarkNode *> &nodes = lm_graph.get_nodes();
+
     // initialize all nodes to not reached and not effect of unused ALM
     set<LandmarkNode *>::iterator lit;
     for (lit = nodes.begin(); lit != nodes.end(); lit++) {
         LandmarkNode &node = **lit;
         node.status = lm_not_reached;
-        if (reached[node.get_id()]) {
+        if (node.get_id() < reached.size() && reached[node.get_id()]) {
             node.status = lm_reached;
         }
     }
-
     bool dead_end_found = false;
 
     // mark reached and find needed again landmarks

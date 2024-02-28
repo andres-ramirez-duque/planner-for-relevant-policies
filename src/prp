@@ -76,10 +76,13 @@ fi
 
 MODE="policy-repair"
 if [[ "$1" == "costed" ]]; then
-    MODE="policy-repair-costed"
+    MODE="policy-repair-costed-t"
     shift
 fi
-
+if [[ "$1" == "lama" ]]; then
+    MODE="lama"
+    shift
+fi
 echo "1. Running translator"
 if [[ -e "$2" ]]; then
     echo "Second argument is a file name: use two translator arguments."
