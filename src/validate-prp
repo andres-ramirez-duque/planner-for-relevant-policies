@@ -15,9 +15,9 @@ fi
 ROOT=$(dirname "$0")
 echo $ROOT
 
-#${ROOT}/prp $MODE $1 $2 --dump-policy 2 --optimize-final-policy 1
+${ROOT}/prp $MODE $1 $2 --dump-policy 2 --optimize-final-policy 1 --detect-deadends 1 --jic-limit 90 --planlocal 1 --partial-planlocal 1 --limit-planlocal 1 --plan-with-policy 1 --depth 1000 --generalize-deadends 1 --online-deadends 1 --optimized-scd 1 --debug-output 1 --trials 1000
 
-${ROOT}/prp $MODE $1 $2 --dump-policy 2 --optimize-final-policy 1 --jic-limit 30 --plan-with-policy 0
+#${ROOT}/prp $MODE $1 $2 --dump-policy 2 --optimize-final-policy 1 --jic-limit 30 --plan-with-policy 0
 
 python ${ROOT}/../prp-scripts/translate_policy.py > human_policy.out
 
